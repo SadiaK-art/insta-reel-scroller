@@ -63,9 +63,6 @@ with left_col:
         st.rerun()
 
 with right_col:
-    # ---- Counter ----
-    unwatched_count = df[df['watched'] == False].shape[0]
-    st.subheader(f"📈 Samsul's pending reels: {unwatched_count} to go!")
 
     # ---- Show Reels ----
     st.header(f"🎥 Samsul's Pending Reels ({unwatched_count})")
