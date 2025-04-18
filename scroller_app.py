@@ -23,7 +23,7 @@ if st.button("Add Reel"):
         reel_links.append(new_link)
         pd.DataFrame(reel_links, columns=['link']).to_csv(REELS_FILE, index=False)
         st.success("Reel added successfully!")
-        st.experimental_rerun()
+        st.rerun()  # 
 
 # Show all reels
 st.header("🎥 Your Reels")
