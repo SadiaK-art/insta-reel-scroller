@@ -11,13 +11,35 @@ if os.path.exists(REELS_FILE):
 else:
     df = pd.DataFrame(columns=['link', 'watched'])
 
-reel_links = df['link'].tolist()
-watched_status = df['watched'].tolist()
+# ---- Settings ----
+st.set_page_config(page_title="Sadia's Reel Manager", page_icon="🎬")
 
-# Title
-st.title("💬 My Shared Reels Feed")
+# Cute intro message ❤️
+st.markdown("""
+# 💌 Made with Love
+This app was made to help my poor boyfriend keep up with his reel-watching duties (20 reels/hour minimum 😎).  
+""")
 
-# Input for new reel link
+# Dark mode toggle
+dark_mode = st.sidebar.checkbox("🌑 Dark Mode", value=False)
+
+# Apply dark/light background
+if dark_mode:
+    st.markdown(
+        """
+        <style>
+        body {
+            background-color: #0E1117;
+            color: #FAFAFA;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+# ---- Add Reel Section ----
+st.header("✨ For Sadia's Use!")
+
 new_link = st.text_input("Paste a new Instagram Reel link:")
 
 def format_reel_link(link):
@@ -29,8 +51,7 @@ def format_reel_link(link):
 if st.button("Add Reel"):
     if new_link:
         formatted_link = format_reel_link(new_link)
-        # Only add if not duplicate
-        if formatted_link not in reel_links:
+        if formatted_link not in df['link'].values:
             new_row = pd.DataFrame({'link': [formatted_link], 'watched': [False]})
             df = pd.concat([df, new_row], ignore_index=True)
             df.to_csv(REELS_FILE, index=False)
@@ -39,13 +60,53 @@ if st.button("Add Reel"):
         else:
             st.warning("This reel already exists!")
 
-# Show all reels
-st.header("🎥 Your Reels")
+# Divider
+st.markdown("---")
 
-for idx, (link, watched) in enumerate(zip(reel_links, watched_status)):
-    cols = st.columns([8, 2])  # wider for link, smaller for button
+# ---- Filters and Actions ----
+st.header("🎯 Filters & Actions")
 
-    # Display Reel link
-    with cols[0]:
-        if watched:
-            st.markdown(f"✅ [
+show_only_unwatched = st.checkbox("Show only unwatched reels", value=False)
+
+# Clear watched reels
+if st.button("🧹 Clear All Watched Reels"):
+    df = df[df['watched'] == False]
+    df.to_csv(REELS_FILE, index=False)
+    st.success("Cleared all watched reels!")
+    st.balloons()
+    st.rerun()
+
+# Divider
+st.markdown("---")
+
+# ---- Counter ----
+unwatched_count = df[df['watched'] == False].shape[0]
+st.subheader(f"📈 Samsul's pending reels: {unwatched_count} to go!")
+
+# ---- Show Reels ----
+st.header(f"🎥 Samsul's Pending Reels ({unwatched_count})")
+
+if df.empty:
+    st.info("No reels yet! Add some links above 👆")
+else:
+    for idx, row in df.iterrows():
+        link = row['link']
+        watched = row['watched']
+
+        if show_only_unwatched and watched:
+            continue
+
+        cols = st.columns([8, 2])
+
+        with cols[0]:
+            if watched:
+                st.markdown(f"✅ [Watched Reel]({link})", unsafe_allow_html=True)
+            else:
+                st.markdown(f"[📽️ Watch Reel]({link})", unsafe_allow_html=True)
+
+        with cols[1]:
+            if not watched:
+                if st.button(f"Mark Watched {idx}"):
+                    df.at[idx, 'watched'] = True
+                    df.to_csv(REELS_FILE, index=False)
+                    st.rerun()
