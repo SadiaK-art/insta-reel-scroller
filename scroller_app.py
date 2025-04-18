@@ -74,15 +74,6 @@ with left_col:
 
         st.markdown("</div>", unsafe_allow_html=True)
 
-    st.header("🎯 Filters & Actions")
-    show_only_unwatched = st.checkbox("Show only unwatched reels", value=False)
-
-    if st.button("🧹 Clear All Watched Reels"):
-        df = df[df['watched'] == False]
-        df.to_csv(REELS_FILE, index=False)
-        st.success("Cleared all watched reels!")
-        st.balloons()
-        st.rerun()
 
 with right_col:
     # ---- Counter ----
