@@ -18,9 +18,21 @@ st.set_page_config(page_title="Sadia's Reel Manager", page_icon="🎬")
 
 # ---- Force Dark Mode Styling ----
 st.markdown(
+st.set_page_config(page_title="Sadia's Reel Manager", page_icon="🎬")
+
+# Force Dark Mode (Actually working)
+st.markdown(
     """
     <style>
     body {
+        background-color: #0E1117;
+        color: #FAFAFA;
+    }
+    .stApp {
+        background-color: #0E1117;
+        color: #FAFAFA;
+    }
+    header, footer, .css-18ni7ap.e8zbici2 { 
         background-color: #0E1117;
         color: #FAFAFA;
     }
