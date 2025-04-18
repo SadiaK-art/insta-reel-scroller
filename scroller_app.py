@@ -23,7 +23,7 @@ This app was made to help my poor boyfriend keep up with his reel-watchin' dutie
 """)
 
 # ---- Add Reel Section ----
-st.header("✨ For Sadia's Use!")
+st.header("❤️ For Sadia's Use!")
 
 new_link = st.text_input("Paste a new Instagram Reel link:")
 
