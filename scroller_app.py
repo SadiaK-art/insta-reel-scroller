@@ -35,7 +35,7 @@ def format_reel_link(link):
 
 if st.button("Add Reel"):
     if new_link:
-        formatted_link = format_reel_link(new_link)
+        formatted_link = format_reel_link(new_link)  # Clean the link first
         if formatted_link not in df['link'].values:
             new_row = pd.DataFrame({'link': [formatted_link], 'watched': [False]})
             df = pd.concat([df, new_row], ignore_index=True)
