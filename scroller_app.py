@@ -52,7 +52,7 @@ st.markdown("---")
 left_col, right_col = st.columns([1, 3])  # 1/4 width for left, 3/4 for right
 
 with left_col:
-    st.subheader("🎯 Filters & Actions")
+    st.subheader("Filters & Actions")
     show_only_unwatched = st.checkbox("Show only unwatched reels", value=False)
 
     if st.button("🧹 Clear All Watched Reels"):
