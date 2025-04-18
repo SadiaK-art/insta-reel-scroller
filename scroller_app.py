@@ -41,6 +41,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
 # ---- Cute Intro Message ----
 st.markdown("""
 # 💌 Made with Love
