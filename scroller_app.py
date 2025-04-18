@@ -19,7 +19,7 @@ st.set_page_config(page_title="Sadia's Reel Manager", page_icon="🎬")
 # ---- Cute Intro Message ----
 st.markdown("""
 # 💌 Made with Love
-This app was made to help my poor boyfriend keep up with his reel-watchin' duties (20 reels/hour minimum 😎).
+This app was made to help my poor boyfriend keep up with his reel-watchin' duties.
 """)
 
 # ---- Helper function to clean links ----
