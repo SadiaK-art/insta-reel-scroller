@@ -30,7 +30,7 @@ def format_reel_link(link):
     return clean_link
 
 # ---- Add Reel Section ----
-st.header("✨ For Sadia's Use!")
+st.header(":cat: For Sadia's Use!")
 
 new_link = st.text_input("Paste a new Instagram Reel link:")
 
