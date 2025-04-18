@@ -22,21 +22,26 @@ st.markdown("""
 This app was made to help my poor boyfriend keep up with his reel-watchin' duties (20 reels/hour minimum 😎).
 """)
 
-# ---- Add Reel Section ----
-st.header("❤️ For Sadia's Use!")
-
-new_link = st.text_input("Paste a new Instagram Reel link:")
-
+# ---- Helper function to clean links ----
 def format_reel_link(link):
     clean_link = link.split('?')[0]
     if not clean_link.endswith('/'):
         clean_link += '/'
     return clean_link
 
+# ---- Add Reel Section ----
+st.header("✨ For Sadia's Use!")
+
+new_link = st.text_input("Paste a new Instagram Reel link:")
+
 if st.button("Add Reel"):
     if new_link:
-        formatted_link = format_reel_link(new_link)  # Clean the link first
-        if formatted_link not in df['link'].values:
+        formatted_link = format_reel_link(new_link)
+        
+        # Clean all existing links before checking for duplicates
+        existing_links_clean = df['link'].apply(format_reel_link).tolist()
+
+        if formatted_link not in existing_links_clean:
             new_row = pd.DataFrame({'link': [formatted_link], 'watched': [False]})
             df = pd.concat([df, new_row], ignore_index=True)
             df.to_csv(REELS_FILE, index=False)
@@ -52,7 +57,7 @@ st.markdown("---")
 left_col, right_col = st.columns([1, 3])  # 1/4 width for left, 3/4 for right
 
 with left_col:
-    st.subheader("Filters & Actions")
+    st.header("🎯 Filters & Actions")
     show_only_unwatched = st.checkbox("Show only unwatched reels", value=False)
 
     if st.button("🧹 Clear All Watched Reels"):
@@ -65,6 +70,8 @@ with left_col:
 with right_col:
     # ---- Counter ----
     unwatched_count = df[df['watched'] == False].shape[0]
+    st.subheader(f"📈 Samsul's pending reels: {unwatched_count} to go!")
+
     # ---- Show Reels ----
     st.header(f"🎥 Samsul's Pending Reels ({unwatched_count})")
 
