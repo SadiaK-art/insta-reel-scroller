@@ -8,34 +8,32 @@ REELS_FILE = 'reels.csv'
 # Load existing links if file exists
 if os.path.exists(REELS_FILE):
     df = pd.read_csv(REELS_FILE)
+    if 'watched' not in df.columns:
+        df['watched'] = False
 else:
     df = pd.DataFrame(columns=['link', 'watched'])
 
 # ---- Settings ----
 st.set_page_config(page_title="Sadia's Reel Manager", page_icon="🎬")
 
-# Cute intro message ❤️
+# ---- Force Dark Mode Styling ----
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: #0E1117;
+        color: #FAFAFA;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# ---- Cute Intro Message ----
 st.markdown("""
 # 💌 Made with Love
-This app was made to help my poor boyfriend keep up with his reel-watching duties (20 reels/hour minimum 😎).  
+This app was made to help my poor boyfriend keep up with his reel-watchin' duties (20 reels/hour minimum 😎).
 """)
-
-# Dark mode toggle
-dark_mode = st.sidebar.checkbox("🌑 Dark Mode", value=False)
-
-# Apply dark/light background
-if dark_mode:
-    st.markdown(
-        """
-        <style>
-        body {
-            background-color: #0E1117;
-            color: #FAFAFA;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
 
 # ---- Add Reel Section ----
 st.header("✨ For Sadia's Use!")
@@ -88,6 +86,8 @@ st.header(f"🎥 Samsul's Pending Reels ({unwatched_count})")
 
 if df.empty:
     st.info("No reels yet! Add some links above 👆")
+elif unwatched_count == 0:
+    st.success("🥳 Good job baby! You're all caught up with the reels! 🎉")
 else:
     for idx, row in df.iterrows():
         link = row['link']
