@@ -48,52 +48,51 @@ if st.button("Add Reel"):
 # Divider
 st.markdown("---")
 
-# ---- Filters and Actions ----
-st.header("🎯 Filters & Actions")
+# ---- Two Column Layout ----
+left_col, right_col = st.columns([1, 3])  # 1/4 width for left, 3/4 for right
 
-show_only_unwatched = st.checkbox("Show only unwatched reels", value=False)
+with left_col:
+    st.header("🎯 Filters & Actions")
+    show_only_unwatched = st.checkbox("Show only unwatched reels", value=False)
 
-# Clear watched reels
-if st.button("🧹 Clear All Watched Reels"):
-    df = df[df['watched'] == False]
-    df.to_csv(REELS_FILE, index=False)
-    st.success("Cleared all watched reels!")
-    st.balloons()
-    st.rerun()
+    if st.button("🧹 Clear All Watched Reels"):
+        df = df[df['watched'] == False]
+        df.to_csv(REELS_FILE, index=False)
+        st.success("Cleared all watched reels!")
+        st.balloons()
+        st.rerun()
 
-# Divider
-st.markdown("---")
+with right_col:
+    # ---- Counter ----
+    unwatched_count = df[df['watched'] == False].shape[0]
+    st.subheader(f"📈 Samsul's pending reels: {unwatched_count} to go!")
 
-# ---- Counter ----
-unwatched_count = df[df['watched'] == False].shape[0]
-st.subheader(f"📈 Samsul's pending reels: {unwatched_count} to go!")
+    # ---- Show Reels ----
+    st.header(f"🎥 Samsul's Pending Reels ({unwatched_count})")
 
-# ---- Show Reels ----
-st.header(f"🎥 Samsul's Pending Reels ({unwatched_count})")
+    if df.empty:
+        st.info("No reels yet! Add some links above 👆")
+    elif unwatched_count == 0:
+        st.success("🥳 Good job baby! You're all caught up with the reels! 🎉")
+    else:
+        for idx, row in df.iterrows():
+            link = row['link']
+            watched = row['watched']
 
-if df.empty:
-    st.info("No reels yet! Add some links above 👆")
-elif unwatched_count == 0:
-    st.success("🥳 Good job baby! You're all caught up with the reels! 🎉")
-else:
-    for idx, row in df.iterrows():
-        link = row['link']
-        watched = row['watched']
+            if show_only_unwatched and watched:
+                continue
 
-        if show_only_unwatched and watched:
-            continue
+            cols = st.columns([8, 2])
 
-        cols = st.columns([8, 2])
+            with cols[0]:
+                if watched:
+                    st.markdown(f"✅ [Watched Reel]({link})", unsafe_allow_html=True)
+                else:
+                    st.markdown(f"[📽️ Watch Reel]({link})", unsafe_allow_html=True)
 
-        with cols[0]:
-            if watched:
-                st.markdown(f"✅ [Watched Reel]({link})", unsafe_allow_html=True)
-            else:
-                st.markdown(f"[📽️ Watch Reel]({link})", unsafe_allow_html=True)
-
-        with cols[1]:
-            if not watched:
-                if st.button(f"Mark Watched {idx}"):
-                    df.at[idx, 'watched'] = True
-                    df.to_csv(REELS_FILE, index=False)
-                    st.rerun()
+            with cols[1]:
+                if not watched:
+                    if st.button(f"Mark Watched {idx}"):
+                        df.at[idx, 'watched'] = True
+                        df.to_csv(REELS_FILE, index=False)
+                        st.rerun()
