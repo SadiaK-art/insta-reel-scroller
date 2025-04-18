@@ -19,7 +19,7 @@ st.set_page_config(page_title="Sadia's Reel Manager", page_icon="🎬")
 # ---- Cute Intro Message ----
 st.markdown("""
 # 💌 Made with Love
-This app was made to help my poor boyfriend keep up with his reel-watching duties 😎.
+This app was made to help my poor boyfriend keep up with his reel-watchin' duties (20 reels/hour minimum 😎).
 """)
 
 # ---- Helper function to clean links ----
@@ -30,7 +30,7 @@ def format_reel_link(link):
     return clean_link
 
 # ---- Add Reel Section ----
-st.header(":heart: For Sadia's Use!")
+st.header("✨ For Sadia's Use!")
 
 new_link = st.text_input("Paste a new Instagram Reel link:")
 
@@ -57,14 +57,7 @@ st.markdown("---")
 left_col, right_col = st.columns([1, 3])  # 1/4 width for left, 3/4 for right
 
 with left_col:
-    st.markdown(
-        """
-        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px;">
-        <h3 style='text-align: center;'>🎯 Filters & Actions</h3>
-        """,
-        unsafe_allow_html=True
-    )
-
+    st.header("🎯 Filters & Actions")
     show_only_unwatched = st.checkbox("Show only unwatched reels", value=False)
 
     if st.button("🧹 Clear All Watched Reels"):
@@ -73,10 +66,6 @@ with left_col:
         st.success("Cleared all watched reels!")
         st.balloons()
         st.rerun()
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
 
 with right_col:
     # ---- Counter ----
