@@ -70,15 +70,13 @@ with left_col:
 with right_col:
     # ---- Counter ----
     unwatched_count = df[df['watched'] == False].shape[0]
-    st.subheader(f"📈 Samsul's pending reels: {unwatched_count} to go!")
-
     # ---- Show Reels ----
-    st.header(f"🎥 Samsul's Pending Reels ({unwatched_count})")
+    st.header(f"🎥 Samsul's Pending Reels ({unwatched_count} to go!)")
 
     if df.empty:
         st.info("No reels yet! Add some links above 👆")
     elif unwatched_count == 0:
-        st.success("🥳 Good job baby! You're all caught up with the reels! 🎉")
+        st.success("🥳 Good job baby! You're all caught up! 🎉")
     else:
         for idx, row in df.iterrows():
             link = row['link']
